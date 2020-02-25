@@ -1,0 +1,13 @@
+universe = vanilla
+initialdir = .
+#use_x509userproxy = true
+error = ./con_logs/$(Process)_0000_1111.err
+log = ./con_logs/$(Process)_0000_1111.log
+output = ./con_logs/$(Process)_0000_1111.out
+executable = condorsubmit_lhetogensim.sh
+transfer_input_files = condorsubmit_lhetogensim.sh, LHEROOT_cfg.py, GENSIM_cfg.py, RPV_Higgsino_oneproc_mn1_0000_mx1_1111_split/RPV_Higgsino_oneproc_mn1_0000_mx1_1111_$(Process).lhe
+arguments = $(Process) 0000 1111
+Notification = never
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+queue xxx

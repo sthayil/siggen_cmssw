@@ -1,0 +1,5 @@
+*.root
+*~
+con_logs/
+RPV_*
+docker_stderror
