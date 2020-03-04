@@ -6,6 +6,7 @@ First,
 cmsrel CMSSW_9_3_4
 cd src/
 cmsenv
+voms-proxy-init --valid 192:00 -voms cms
 ```
 
 To run: 
