@@ -21,7 +21,7 @@ then
 else
 	echo Splitting LHE
 	mkdir RPV_Higgsino_oneproc_mn1_$1_mx1_$2_split
-	python splitLHE.py /uscms/home/sthayil/nobackup/rpvhiggsinos/madgraph/mn1-$1-mx1-$2_100kev.lhe RPV_Higgsino_oneproc_mn1_$1_mx1_$2_split/RPV_Higgsino_oneproc_mn1_$1_mx1_$2_ $3 
+	python splitLHE.py /uscms/home/sthayil/nobackup/rpvhiggsinos/madgraph/MG5_aMC_v2_6_7/siggen/events_n1_x1-$1-$2/Events/run_01/unweighted_events.lhe RPV_Higgsino_oneproc_mn1_$1_mx1_$2_split/RPV_Higgsino_oneproc_mn1_$1_mx1_$2_ $3 
 	echo Splitting done
 fi
 

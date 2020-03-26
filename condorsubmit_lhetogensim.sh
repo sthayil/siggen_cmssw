@@ -24,5 +24,8 @@ pwd
 cmsRun LHEROOT_cfg.py $1 $2 $3
 cmsRun GENSIM_cfg.py $1 $2 $3
 
-xrdcp GENSIM_2017_RPV_Higgsino_oneproc_mn1_$2_mx1_$3_$1.root root://cmseos.fnal.gov//store/user/sthayil/rpvhiggsinos/gensim/
-#rm GENSIM_2017_RPV_Higgsino_oneproc_mn1_$1_mx1_$2_$3.root
+cd RPV_Higgsino_oneproc_mn1_$2_mx1_$3_split/GENSIM_output
+ls
+
+xrdcp GENSIM_2017_RPV_Higgsino_oneproc_mn1_$2_mx1_$3_$1.root root://cmseos.fnal.gov//store/user/sthayil/rpvhiggsinos/gensim/n1x1_0318/
+rm GENSIM_2017_RPV_Higgsino_oneproc_mn1_$1_mx1_$2_$3.root
