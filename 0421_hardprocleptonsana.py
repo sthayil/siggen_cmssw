@@ -6,7 +6,8 @@ import sys
 
 inputfiles=[]
 for i in range(int(sys.argv[4]),int(sys.argv[5])):
-    inputfile = "root://cmsxrootd.fnal.gov//store/user/sthayil/rpvhiggsinos/gensim/n1x1_0318/GENSIM_2017_RPV_Higgsino_oneproc_mn1_"+sys.argv[1]+"_mx1_"+sys.argv[2]+"_"+str(i)+".root" 
+    inputfile = "root://cmsxrootd.fnal.gov//store/user/sthayil/rpvhiggsinos/gensim/testforhui/GENSIM_2017_NanoAODcompatible_oneproc_mn1_"+sys.argv[1]+"_mx1_"+sys.argv[2]+"_"+str(i)+".root" 
+#    inputfile = "root://cmsxrootd.fnal.gov//store/user/sthayil/rpvhiggsinos/gensim/n1x1_0318/GENSIM_2017_RPV_Higgsino_oneproc_mn1_"+sys.argv[1]+"_mx1_"+sys.argv[2]+"_"+str(i)+".root" 
 #    inputfile = "GENSIM_2017_NanoAODcompatible_oneproc_mn1_"+sys.argv[1]+"_mx1_"+sys.argv[2]+"_"+str(i)+".root"
     inputfiles.append(inputfile)
 
@@ -19,7 +20,7 @@ label = ("genParticles")
 gROOT.ForceStyle()
 gStyle.SetOptStat(111111)
 
-outputfile = "testplots_"+sys.argv[1]+"_"+sys.argv[2]+"_"+sys.argv[3]+".root"
+outputfile = "testforhui_testplots_"+sys.argv[1]+"_"+sys.argv[2]+"_"+sys.argv[3]+".root"
 out_file = TFile(outputfile, 'recreate')
 
 leptons = [11, 13]
@@ -78,8 +79,6 @@ ht450=0
 ht450leppt20iso1pt2=ht450elpt20iso1pt2=ht450mupt20iso1pt2=0
 
 ht1050hardlep=ht450hardlep=ht450hardlep20=ht450hardlep20iso1pt2=hardlep=0
-ev_elfromhardproc=ev_elfromhardproctau=ev_el3ht450=ev_el20ht450=ev_el20iso1pt2ht450=ev_el3ht1050=[]
-ev_mufromhardproc=ev_mufromhardproctau=ev_mu3ht450=ev_mu20ht450=ev_mu20iso1pt2ht450=ev_mu3ht1050=[]
 
 #ISOLATION CALC --------------------------------------------------------------------------------------------------------------------------------------
 def isolation(particle):       
@@ -102,6 +101,7 @@ def nearestjet(particle):
     pvec = TLorentzVector()
     pvec.SetPtEtaPhiM(particle.pt(), particle.eta(), particle.phi(), particle.mass())
     min_deltar=1000000
+    closestjet='lalala' #EXCEPTIONS      
     event.getByLabel(label1, handle1)
     genjets = handle1.product()
     for jet in genjets:
@@ -114,17 +114,22 @@ def nearestjet(particle):
                 closestjet = jet
                 closestjetvec = jetvec
  
-    flag=0 #if particle is inside jet, subtract its 4vec from the jet's 4vec
-    for i in range(closestjet.numberOfDaughters()):                                                                                                                                          
-        daughter = closestjet.daughter(i)                             
-        if daughter == particle: flag=1
-    if flag==1: 
-        closestjetvec = closestjetvec - pvec
+    if closestjet == 'lalala':
+        print "EH", cnt, "This lepton has no jets >30 GeV within eta 2.5"
+        return min_deltar, 0
 
-    new_closestjetvec=closestjetvec.Vect()
-    ptrel = pvec.Perp(new_closestjetvec)
-    
-    return min_deltar, ptrel
+    else:
+        flag=0 #if particle is inside jet, subtract its 4vec from the jet's 4vec
+        for i in range(closestjet.numberOfDaughters()):
+            daughter = closestjet.daughter(i)
+            if daughter == particle: flag=1
+        if flag==1:
+            closestjetvec = closestjetvec - pvec
+
+        new_closestjetvec=closestjetvec.Vect()
+        ptrel = pvec.Perp(new_closestjetvec)
+
+        return min_deltar, ptrel
 
 #EVENT LOOP --------------------------------------------------------------------------------------------------------------------------------------------
 for inputfile in inputfiles: #for each input file
@@ -179,8 +184,6 @@ for inputfile in inputfiles: #for each input file
                         iso1=isolation(particle)
                         if iso1 < 1.2 : hashardlepiso1pt2 = 1
                         hist_hardproclep_leptoniso.Fill( iso1 )
-                        if abs(particle.pdgId())==11: ev_elfromhardproc.append(count)
-                        if abs(particle.pdgId())==13: ev_mufromhardproc.append(count)
                         min_deltar, ptrel = nearestjet(particle)
                         hist_hardproclep_disttonearestjet.Fill(min_deltar)
                         hist_hardproclep_ptrel.Fill(ptrel)
@@ -199,8 +202,6 @@ for inputfile in inputfiles: #for each input file
                         iso1=isolation(particle)
                         if iso1 < 1.2 : hashardlepiso1pt2 = 1
                         hist_hardprocleptau_leptoniso.Fill( iso1 )
-                        if abs(particle.pdgId())==11: ev_elfromhardproctau.append(count)
-                        if abs(particle.pdgId())==13: ev_mufromhardproctau.append(count)
                         min_deltar, ptrel = nearestjet(particle)
                         hist_hardprocleptau_disttonearestjet.Fill(min_deltar)
                         hist_hardprocleptau_ptrel.Fill(ptrel)
