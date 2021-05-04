@@ -1,0 +1,13 @@
+universe = vanilla
+initialdir = .
+#use_x509userproxy = true
+error = ./con_logs/$(Process)_0000_1111_2222.err
+log = ./con_logs/$(Process)_0000_1111_2222.log
+output = ./con_logs/$(Process)_0000_1111_2222.out
+executable = x1n2_condorsubmit_lhetogensim.sh
+transfer_input_files = x1n2_condorsubmit_lhetogensim.sh, x1n2_LHEROOT_cfg.py, x1n2_GENSIM_cfg.py, NanoAODcompatible_x1_n2-0000-1111-2222_split/GENSIM_x1_n2-0000-1111-2222_$(Process).lhe
+arguments = $(Process) 0000 1111 2222
+Notification = never
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+queue xxx
